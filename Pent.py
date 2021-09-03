@@ -111,7 +111,7 @@ class Pent:  # controller
                 self.score_inf.update(constants.POINTS_PER_LINE)
                 for item in range(line, 0, -1):
                     self.field.field[item] = self.field.field[item - 1]
-                self.field.field[0] = [False for i in range(FIELD_WIDTH)]
+                self.field.field[0] = [False for i in range(constants.FIELD_WIDTH)]
                 line -= 1
             line += 1
 

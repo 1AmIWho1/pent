@@ -1,5 +1,6 @@
 from Field import Field
 from Pent import Pent
+from Menu import Menu
 import constants
 import pygame
 
@@ -10,12 +11,14 @@ class PentView:  # view
         self.time = 0
         self.clock = pygame.time.Clock()
         self.field = Field()
+        self.menu = Menu()
         self.pent = Pent(self.field)
         pygame.init()
         pygame.font.init()
-        self.screen = pygame.display.set_mode((constants.FIELD_WIDTH * constants.POINT_SIZE + 2 * constants.FRAME_THICKNESS, constants.SCORE_TABLE_HEIGHT + constants.FIELD_HEIGHT * constants.POINT_SIZE + 2 * constants.FRAME_THICKNESS))
+        self.screen = pygame.display.set_mode((constants.WINDOW_WIDTH, constants.WINDOW_HEIGHT))
         self.gameover = False
         self.game_on = False
+        self.menu_on = False
 
     def restart(self):
         self.time = 0
@@ -27,12 +30,12 @@ class PentView:  # view
             if event.type == pygame.QUIT:
                 self.gameover = True
                 self.pent.score_inf.check_record()
-            elif not self.gameover:
+            elif not self.gameover and not self.menu_on:
                 if self.game_on:
                     if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_ESCAPE:  # may be a menu?
-                            self.gameover = True
-                            self.pent.score_inf.check_record()
+                        if event.key == pygame.K_ESCAPE:  # menu
+                            self.menu_on = True
+                            self.game_on = False
                         elif event.key == pygame.K_a:
                             self.pent.move_figure(-1)
                         elif event.key == pygame.K_d:
@@ -50,6 +53,17 @@ class PentView:  # view
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_SPACE:
                             self.game_on = True
+            elif self.menu_on:
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        self.menu_on = False
+                        self.game_on = True
+
+    def draw_menu(self):
+        font = pygame.font.SysFont(constants.FONT, 50)
+        text = font.render(self.menu.sentence, False, constants.COLORS['WHITE'])
+        text_rect = text.get_rect(center=(constants.WINDOW_WIDTH/2, constants.WINDOW_HEIGHT/2))
+        self.screen.blit(text, text_rect)
 
     def draw_field(self):
         for line in range(len(self.field.field)):
@@ -84,9 +98,12 @@ class PentView:  # view
 
     def process_draw(self):
         self.screen.fill(constants.COLORS['BLACK'])
-        self.draw_field()
-        self.draw_figure()
-        self.draw_score()
+        if self.menu_on:
+            self.draw_menu()
+        else:
+            self.draw_field()
+            self.draw_figure()
+            self.draw_score()
         pygame.display.flip()
 
     def process_check(self):
