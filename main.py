@@ -285,10 +285,14 @@ class PentView:  # view
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.gameover = True
+                self.pent.score_inf.check_record()
             elif not self.gameover:
                 if self.game_on:
                     if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_a:
+                        if event.key == pygame.K_ESCAPE:  # may be a menu?
+                            self.gameover = True
+                            self.pent.score_inf.check_record()
+                        elif event.key == pygame.K_a:
                             self.pent.move_figure(-1)
                         elif event.key == pygame.K_d:
                             self.pent.move_figure(1)
