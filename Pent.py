@@ -11,12 +11,16 @@ class Pent:  # controller
         self.field = field
         self.time_per_move = constants.TIME_PER_MOVE
         self.score_inf = Score()
-        self.add_new_figure()
+        self.accelerate_figure(False)
+        self.figure = Figure()
+        self.figure_x = constants.FRAME_THICKNESS + (
+                    (constants.FIELD_WIDTH - len(self.figure.shape[0])) // 2) * constants.POINT_SIZE
+        self.figure_y = constants.FRAME_THICKNESS
 
     def add_new_figure(self):  # добавляет новую фигуру сверху посередине
         self.accelerate_figure(False)
         self.figure = Figure()
-        self.figure_x = constants.FRAME_THICKNESS + ((constants.FIELD_WIDTH - len(self.figure.shape[0])) // 2 + 1) * constants.POINT_SIZE
+        self.figure_x = constants.FRAME_THICKNESS + ((constants.FIELD_WIDTH - len(self.figure.shape[0])) // 2) * constants.POINT_SIZE
         self.figure_y = constants.FRAME_THICKNESS
 
     def stop_figure(self):  # останавливает фигуру и записывает ее в поле
