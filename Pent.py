@@ -15,7 +15,7 @@ class Pent:  # controller
         self.figure = Figure()
         self.figure_x = constants.FRAME_THICKNESS + (
                     (constants.FIELD_WIDTH - len(self.figure.shape[0])) // 2) * constants.POINT_SIZE
-        self.figure_y = constants.FRAME_THICKNESS
+        self.figure_y = constants.FRAME_THICKNESS  # верхняя точка фигуры + 1 пиксель
 
     def add_new_figure(self):  # добавляет новую фигуру сверху посередине
         self.accelerate_figure(False)
@@ -36,10 +36,9 @@ class Pent:  # controller
         self.score_inf.update(constants.POINTS_PER_STOP)
 
     def move_figure(self, direction):  # движение фигуры влево/вправо
-        if direction == -1 and not self.check_collision_left():
-            self.figure_x += direction * constants.POINT_SIZE
-        elif direction == 1 and not self.check_collision_right():
-            self.figure_x += direction * constants.POINT_SIZE
+        self.figure_x += direction * constants.POINT_SIZE
+        if self.check_collision_right() or self.check_collision_left() or self.check_collision_down():
+            self.figure_x -= direction * constants.POINT_SIZE
 
     def rotate_figure(self, direction: bool):  # вращение фигуры по/против часовой стрелке
         self.figure.rotate(direction)
@@ -61,8 +60,8 @@ class Pent:  # controller
             self.stop_figure()
             self.add_new_figure()
 
-    def check_collision_left(self):
-        if constants.FRAME_THICKNESS >= self.figure_x:
+    def check_collision_left(self):  # проверяет, не наезжает ли одна движущаяся фигура на что-либо слева
+        if constants.FRAME_THICKNESS > self.figure_x:
             return True
         try:
             x = (self.figure_x - constants.FRAME_THICKNESS) // constants.POINT_SIZE
@@ -70,15 +69,15 @@ class Pent:  # controller
             line = y
             while line < y + len(self.figure.shape):
                 for point in range(len(self.figure.shape[0])):
-                    if self.figure.shape[line - y][point] and self.field.field[line][x + point - 1]:
+                    if self.figure.shape[line - y][point] and self.field.field[line][x + point]:
                         return True
                 line += 1
         except IndexError:
             return True
         return False
 
-    def check_collision_right(self):
-        if self.figure_x + len(self.figure.shape[0]) * constants.POINT_SIZE >= constants.FRAME_THICKNESS + constants.FIELD_WIDTH * constants.POINT_SIZE:
+    def check_collision_right(self):    # проверяет, не наезжает ли одна движущаяся фигура на что-либо справа
+        if self.figure_x + len(self.figure.shape[0]) * constants.POINT_SIZE > constants.FRAME_THICKNESS + constants.FIELD_WIDTH * constants.POINT_SIZE:
             return True
         try:
             x = (self.figure_x - constants.FRAME_THICKNESS) // constants.POINT_SIZE
@@ -86,7 +85,7 @@ class Pent:  # controller
             line = y
             while line < y + len(self.figure.shape):
                 for point in range(len(self.figure.shape[0])):
-                    if self.figure.shape[line - y][point] and self.field.field[line][x + point + 1]:
+                    if self.figure.shape[line - y][point] and self.field.field[line][x + point]:
                         return True
                 line += 1
         except IndexError:
