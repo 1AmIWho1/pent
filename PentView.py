@@ -46,6 +46,8 @@ class PentView:  # view
                             self.pent.rotate_figure(True)
                         elif event.key == pygame.K_s:
                             self.pent.accelerate_figure(True)
+                        elif event.key == pygame.K_SPACE:
+                            self.pent.drop_figure()
                     if event.type == pygame.KEYUP:
                         if event.key == pygame.K_s:
                             self.pent.accelerate_figure(False)

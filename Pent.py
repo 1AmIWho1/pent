@@ -14,13 +14,14 @@ class Pent:  # controller
         self.accelerate_figure(False)
         self.figure = Figure()
         self.figure_x = constants.FRAME_THICKNESS + (
-                    (constants.FIELD_WIDTH - len(self.figure.shape[0])) // 2) * constants.POINT_SIZE
-        self.figure_y = constants.FRAME_THICKNESS  # верхняя точка фигуры + 1 пиксель
+                (constants.FIELD_WIDTH - len(self.figure.shape[0])) // 2) * constants.POINT_SIZE  # левая точка фигуры
+        self.figure_y = constants.FRAME_THICKNESS  # верхняя точка фигуры + 1 пиксель(наверное)
 
     def add_new_figure(self):  # добавляет новую фигуру сверху посередине
         self.accelerate_figure(False)
         self.figure = Figure()
-        self.figure_x = constants.FRAME_THICKNESS + ((constants.FIELD_WIDTH - len(self.figure.shape[0])) // 2) * constants.POINT_SIZE  # что это блять?
+        self.figure_x = constants.FRAME_THICKNESS + (
+                (constants.FIELD_WIDTH - len(self.figure.shape[0])) // 2) * constants.POINT_SIZE
         self.figure_y = constants.FRAME_THICKNESS
 
     def stop_figure(self):  # останавливает фигуру и записывает ее в поле
@@ -51,6 +52,12 @@ class Pent:  # controller
         else:
             self.time_per_move = constants.TIME_PER_MOVE
 
+    def drop_figure(self):  # мгновенное падение фигуры
+        while not self.check_collision_down():
+            self.figure_y += constants.POINT_SIZE
+        self.stop_figure()
+        self.add_new_figure()
+
     def fall_figure(self, time):  # нормальное падение фигуры
         collision = self.check_collision_down()
         if not collision and time - self.last_time >= self.time_per_move:
@@ -77,7 +84,8 @@ class Pent:  # controller
         return False
 
     def check_collision_right(self):    # проверяет, не наезжает ли одна движущаяся фигура на что-либо справа
-        if self.figure_x + len(self.figure.shape[0]) * constants.POINT_SIZE > constants.FRAME_THICKNESS + constants.FIELD_WIDTH * constants.POINT_SIZE:
+        if self.figure_x + len(self.figure.shape[0]) * constants.POINT_SIZE > \
+                constants.FRAME_THICKNESS + constants.FIELD_WIDTH * constants.POINT_SIZE:
             return True
         try:
             x = (self.figure_x - constants.FRAME_THICKNESS) // constants.POINT_SIZE
@@ -93,7 +101,8 @@ class Pent:  # controller
         return False
 
     def check_collision_down(self):
-        if self.figure_y + len(self.figure.shape) * constants.POINT_SIZE >= constants.FRAME_THICKNESS + len(self.field.field) * constants.POINT_SIZE:
+        if self.figure_y + len(self.figure.shape) * constants.POINT_SIZE >= \
+                constants.FRAME_THICKNESS + len(self.field.field) * constants.POINT_SIZE:
             return True
         try:
             x = (self.figure_x - constants.FRAME_THICKNESS) // constants.POINT_SIZE
