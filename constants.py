@@ -1,5 +1,7 @@
 import pygame
 import random
+import os
+
 
 POINTS_PER_FIGURE = 5
 
@@ -21,6 +23,11 @@ WINDOW_WIDTH = FIELD_WIDTH * POINT_SIZE + 2 * FRAME_THICKNESS
 WINDOW_HEIGHT = SCORE_TABLE_HEIGHT + FIELD_HEIGHT * POINT_SIZE + 2 * FRAME_THICKNESS
 
 FONT = 'progresspixel-bold'
+
+WAY = os.getenv('APPDATA') + r'\..\Local\Games\pent\record.json'
+if not os.path.exists(os.path.dirname(WAY)):
+        os.makedirs(os.path.dirname(WAY))
+
 
 COLORS = {
     'RED': pygame.Color(255, 0, 0),

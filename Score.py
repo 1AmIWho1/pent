@@ -7,10 +7,10 @@ class Score:
     def __init__(self):
         self.score = 0
         try:
-            with open('record.json', 'r') as r:
+            with open(constants.WAY, 'r') as r:
                 self.record = json.load(r)
         except FileNotFoundError:
-            with open('record.json', 'w') as r:
+            with open(constants.WAY, 'w') as r:
                 json.dump(0, r)
             self.record = 0
         self.x = 25
@@ -24,7 +24,7 @@ class Score:
 
     def check_record(self):
         if self.score > self.record:
-            with open('record.json', 'w') as record_json:
+            with open(constants.WAY, 'w') as record_json:
                 json.dump(self.score, record_json)
             return True
         return False
