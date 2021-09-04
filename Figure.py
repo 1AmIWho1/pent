@@ -63,8 +63,8 @@ class Figure:
                 point -= 1
             point += 1
 
-    def rotate(self, direction):
-        if direction == 1:
+    def rotate(self, direction: bool):
+        if direction:
             self.shape = np.rot90(self.shape)
         else:
             for i in range(3):

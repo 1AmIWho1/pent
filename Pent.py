@@ -20,7 +20,7 @@ class Pent:  # controller
     def add_new_figure(self):  # добавляет новую фигуру сверху посередине
         self.accelerate_figure(False)
         self.figure = Figure()
-        self.figure_x = constants.FRAME_THICKNESS + ((constants.FIELD_WIDTH - len(self.figure.shape[0])) // 2) * constants.POINT_SIZE
+        self.figure_x = constants.FRAME_THICKNESS + ((constants.FIELD_WIDTH - len(self.figure.shape[0])) // 2) * constants.POINT_SIZE  # что это блять?
         self.figure_y = constants.FRAME_THICKNESS
 
     def stop_figure(self):  # останавливает фигуру и записывает ее в поле
@@ -41,9 +41,10 @@ class Pent:  # controller
         elif direction == 1 and not self.check_collision_right():
             self.figure_x += direction * constants.POINT_SIZE
 
-    def rotate_figure(self, direction):  # вращение фигуры по/против часовой стрелке
-        if not self.check_collision_left() and not self.check_collision_right() and not self.check_collision_down():
-            self.figure.rotate(direction)
+    def rotate_figure(self, direction: bool):  # вращение фигуры по/против часовой стрелке
+        self.figure.rotate(direction)
+        if self.check_collision_left() or self.check_collision_right() or self.check_collision_down():
+            self.figure.rotate(not direction)
 
     def accelerate_figure(self, acc):  # ускорение фигуры
         if acc:

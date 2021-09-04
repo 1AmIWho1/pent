@@ -41,9 +41,9 @@ class PentView:  # view
                         elif event.key == pygame.K_d:
                             self.pent.move_figure(1)
                         elif event.key == pygame.K_q:
-                            self.pent.rotate_figure(-1)
+                            self.pent.rotate_figure(False)
                         elif event.key == pygame.K_e:
-                            self.pent.rotate_figure(1)
+                            self.pent.rotate_figure(True)
                         elif event.key == pygame.K_s:
                             self.pent.accelerate_figure(True)
                     if event.type == pygame.KEYUP:
