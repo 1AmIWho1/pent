@@ -2,6 +2,7 @@ import pygame
 import random
 import os
 
+NET = True
 
 POINTS_PER_FIGURE = 5
 
@@ -26,7 +27,7 @@ FONT = 'progresspixel-bold'
 
 WAY = os.getenv('APPDATA') + r'\..\Local\Games\pent\record.json'
 if not os.path.exists(os.path.dirname(WAY)):
-        os.makedirs(os.path.dirname(WAY))
+    os.makedirs(os.path.dirname(WAY))
 
 
 COLORS = {

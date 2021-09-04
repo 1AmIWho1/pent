@@ -10,16 +10,16 @@ class Pent:  # controller
         self.last_time = 0
         self.field = field
         self.time_per_move = constants.TIME_PER_MOVE
-        self.add_new_figure()
         self.score_inf = Score()
+        self.add_new_figure()
 
-    def add_new_figure(self):
+    def add_new_figure(self):  # добавляет новую фигуру сверху посередине
         self.accelerate_figure(False)
         self.figure = Figure()
         self.figure_x = constants.FRAME_THICKNESS + ((constants.FIELD_WIDTH - len(self.figure.shape[0])) // 2 + 1) * constants.POINT_SIZE
         self.figure_y = constants.FRAME_THICKNESS
 
-    def stop_figure(self):
+    def stop_figure(self):  # останавливает фигуру и записывает ее в поле
         x = (self.figure_x - constants.FRAME_THICKNESS) // constants.POINT_SIZE
         y = (self.figure_y - constants.FRAME_THICKNESS) // constants.POINT_SIZE
         for line in range(y, y + len(self.figure.shape)):
@@ -31,23 +31,23 @@ class Pent:  # controller
                         pass
         self.score_inf.update(constants.POINTS_PER_STOP)
 
-    def move_figure(self, direction):
+    def move_figure(self, direction):  # движение фигуры влево/вправо
         if direction == -1 and not self.check_collision_left():
             self.figure_x += direction * constants.POINT_SIZE
         elif direction == 1 and not self.check_collision_right():
             self.figure_x += direction * constants.POINT_SIZE
 
-    def rotate_figure(self, direction):
+    def rotate_figure(self, direction):  # вращение фигуры по/против часовой стрелке
         if not self.check_collision_left() and not self.check_collision_right() and not self.check_collision_down():
             self.figure.rotate(direction)
 
-    def accelerate_figure(self, acc):
+    def accelerate_figure(self, acc):  # ускорение фигуры
         if acc:
             self.time_per_move = constants.ACCELERATE_TIME_PER_MOVE
         else:
             self.time_per_move = constants.TIME_PER_MOVE
 
-    def fall_figure(self, time):
+    def fall_figure(self, time):  # нормальное падение фигуры
         collision = self.check_collision_down()
         if not collision and time - self.last_time >= self.time_per_move:
             self.figure_y += constants.POINT_SIZE
