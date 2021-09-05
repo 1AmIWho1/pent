@@ -54,7 +54,6 @@ class PentView:  # view
                 else:
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_SPACE:
-                            self.restart()
                             self.game_on = True
             elif self.menu_on:
                 if event.type == pygame.KEYDOWN:
@@ -133,7 +132,7 @@ class PentView:  # view
         self.pent.check_and_stop()
         if self.pent.check_gameover():
             self.game_on = False
-            #self.restart()
+            self.restart()
 
     def process_logic(self):
         if self.game_on:
