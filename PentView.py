@@ -54,6 +54,7 @@ class PentView:  # view
                 else:
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_SPACE:
+                            self.restart()
                             self.game_on = True
             elif self.menu_on:
                 if event.type == pygame.KEYDOWN:
@@ -62,7 +63,7 @@ class PentView:  # view
                         self.game_on = True
 
     def draw_menu(self):
-        font = pygame.font.SysFont(constants.FONT, 50)
+        font = pygame.font.Font(constants.FONT, 50)
         text = font.render(self.menu.sentence, False, constants.COLORS['WHITE'])
         text_rect = text.get_rect(center=(constants.WINDOW_WIDTH/2, constants.WINDOW_HEIGHT/2))
         self.screen.blit(text, text_rect)
@@ -103,7 +104,7 @@ class PentView:  # view
                               constants.FRAME_THICKNESS + i * constants.POINT_SIZE - 1))
 
     def draw_score(self):
-        font = pygame.font.SysFont(constants.FONT, 34)
+        font = pygame.font.Font(constants.FONT, 34)
         text_score = font.render('score:', False, constants.COLORS['WHITE'])
         self.screen.blit(text_score, (self.pent.score_inf.x, self.pent.score_inf.y))
         value_score = font.render(str(self.pent.score_inf.score), False, constants.COLORS['WHITE'])
@@ -132,7 +133,7 @@ class PentView:  # view
         self.pent.check_and_stop()
         if self.pent.check_gameover():
             self.game_on = False
-            self.restart()
+            #self.restart()
 
     def process_logic(self):
         if self.game_on:

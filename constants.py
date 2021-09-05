@@ -24,7 +24,7 @@ POINTS_PER_LINE = 100
 WINDOW_WIDTH = FIELD_WIDTH * POINT_SIZE + 2 * FRAME_THICKNESS
 WINDOW_HEIGHT = SCORE_TABLE_HEIGHT + FIELD_HEIGHT * POINT_SIZE + 2 * FRAME_THICKNESS
 
-FONT = 'progresspixel-bold'
+FONT = 'bb3273.ttf'
 
 WAY = os.getenv('APPDATA') + r'\..\Local\Games\pent\record.json'
 if not os.path.exists(os.path.dirname(WAY)):
