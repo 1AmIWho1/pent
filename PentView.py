@@ -67,11 +67,11 @@ class PentView:  # view
         text_rect = text.get_rect(center=(constants.WINDOW_WIDTH/2, constants.WINDOW_HEIGHT/2))
         self.screen.blit(text, text_rect)
 
-    def draw_field(self):
+    def draw_field(self):  # возможно есть смысл добавить возможность оставлять фигурам свои цвета
         for line in range(len(self.field.field)):
             for point in range(len(self.field.field[line])):
                 if self.field.field[line][point]:
-                    pygame.draw.rect(self.screen, self.field.color_stopped_figures,
+                    pygame.draw.rect(self.screen, self.field.field[line][point],
                                      (constants.FRAME_THICKNESS + constants.POINT_SIZE * point,
                                       constants.FRAME_THICKNESS + constants.POINT_SIZE * line,
                                       constants.POINT_SIZE, constants.POINT_SIZE))
@@ -86,9 +86,9 @@ class PentView:  # view
             for point in range(len(self.pent.figure.shape[line])):
                 if self.pent.figure.shape[line][point]:
                     pygame.draw.rect(self.screen, self.pent.figure.color,
-                                     (self.pent.figure_x + constants.POINT_SIZE * point,
-                                      self.pent.figure_y + constants.POINT_SIZE * line, constants.POINT_SIZE,
-                                      constants.POINT_SIZE))
+                                     (constants.FRAME_THICKNESS + (self.pent.figure_x + point) * constants.POINT_SIZE,
+                                      constants.FRAME_THICKNESS + (self.pent.figure_y + line) * constants.POINT_SIZE,
+                                      constants.POINT_SIZE, constants.POINT_SIZE))
 
     def draw_net(self):
         for i in range(constants.FIELD_WIDTH):

@@ -3,6 +3,7 @@ import random
 import os
 
 NET = True
+STOP_COLOR = False
 
 POINTS_PER_FIGURE = 5
 
