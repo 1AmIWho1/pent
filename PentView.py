@@ -103,15 +103,31 @@ class PentView:  # view
                               constants.FRAME_THICKNESS + i * constants.POINT_SIZE - 1))
 
     def draw_score(self):
-        font = pygame.font.Font(constants.FONT, 34)
+        font = pygame.font.Font(constants.FONT, constants.FONT_SIZE)
         text_score = font.render('score:', False, constants.COLORS['WHITE'])
-        self.screen.blit(text_score, (self.pent.score_inf.x, self.pent.score_inf.y))
+        self.screen.blit(text_score, (constants.FRAME_THICKNESS + 10,
+                                      constants.FIELD_HEIGHT * constants.POINT_SIZE +
+                                      constants.FRAME_THICKNESS + 5))
         value_score = font.render(str(self.pent.score_inf.score), False, constants.COLORS['WHITE'])
-        self.screen.blit(value_score, (self.pent.score_inf.x + 140, self.pent.score_inf.y))
+        self.screen.blit(value_score, (constants.FRAME_THICKNESS + 10 + 140,
+                                       constants.FIELD_HEIGHT * constants.POINT_SIZE +
+                                       constants.FRAME_THICKNESS + 5))
         text_record = font.render('record:', False, constants.COLORS['WHITE'])
-        self.screen.blit(text_record, (self.pent.score_inf.x, self.pent.score_inf.y + 36))
+        self.screen.blit(text_record, (constants.FRAME_THICKNESS + 10,
+                                       constants.FIELD_HEIGHT * constants.POINT_SIZE +
+                                       constants.FRAME_THICKNESS + 5 + constants.FONT_SIZE + 2))
         value_record = font.render(str(self.pent.score_inf.record), False, constants.COLORS['WHITE'])
-        self.screen.blit(value_record, (self.pent.score_inf.x + 140, self.pent.score_inf.y + 36))
+        self.screen.blit(value_record, (constants.FRAME_THICKNESS + 10 + 140,
+                                        constants.FIELD_HEIGHT * constants.POINT_SIZE +
+                                        constants.FRAME_THICKNESS + 5 + constants.FONT_SIZE + 2))
+        text_solved = font.render('solved:', False, constants.COLORS['WHITE'])
+        self.screen.blit(text_solved, (constants.FRAME_THICKNESS + 10,
+                                       constants.FIELD_HEIGHT * constants.POINT_SIZE +
+                                       constants.FRAME_THICKNESS + 5 + 2 * (constants.FONT_SIZE + 2)))
+        value_solved = font.render(str(self.pent.score_inf.solved), False, constants.COLORS['WHITE'])
+        self.screen.blit(value_solved, (constants.FRAME_THICKNESS + 10 + 140,
+                                        constants.FIELD_HEIGHT * constants.POINT_SIZE +
+                                        constants.FRAME_THICKNESS + 5 + 2 * (constants.FONT_SIZE + 2)))
 
     def process_move(self):
         self.pent.fall_figure(self.time)

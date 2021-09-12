@@ -6,6 +6,7 @@ class Score:
 
     def __init__(self):
         self.score = 0
+        self.solved = 0
         try:
             with open(constants.WAY, 'r') as r:
                 self.record = json.load(r)
@@ -13,11 +14,12 @@ class Score:
             with open(constants.WAY, 'w') as r:
                 json.dump(0, r)
             self.record = 0
-        self.x = 25
-        self.y = constants.FIELD_HEIGHT * constants.POINT_SIZE + 2 * constants.FRAME_THICKNESS - 5
 
     def update(self, points):
         self.score += points
+
+    def solve(self):
+        self.solved += 1
 
     def stop_count(self):
         self.score = 0
