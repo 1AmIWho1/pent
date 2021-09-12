@@ -16,6 +16,7 @@ class PentView:  # view
         pygame.init()
         pygame.font.init()
         self.screen = pygame.display.set_mode((constants.WINDOW_WIDTH, constants.WINDOW_HEIGHT))
+        pygame.display.set_caption('pent')
         self.gameover = False
         self.game_on = False
         self.menu_on = False
