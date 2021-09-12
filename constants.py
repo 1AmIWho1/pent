@@ -34,6 +34,9 @@ if not os.path.exists(os.path.dirname(WAY)):
 
 COLORS = {
     'RED': pygame.Color(255, 0, 0),
+    'YELLOW': pygame.Color(255, 204, 51),
+    'PINK': pygame.Color(153, 51, 153),
+    'PURPLE': pygame.Color(102, 0, 102),
     'WHITE': pygame.Color(255, 255, 255),
     'BLACK': pygame.Color(0, 0, 0),
     'BLUE': pygame.Color(0, 0, 153),
