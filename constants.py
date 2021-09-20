@@ -1,6 +1,7 @@
 import pygame
 import random
 import os
+from platform import system
 
 NET = True
 STOP_COLOR = False
@@ -27,7 +28,10 @@ WINDOW_HEIGHT = SCORE_TABLE_HEIGHT + FIELD_HEIGHT * POINT_SIZE + 2 * FRAME_THICK
 FONT_SIZE = 34
 FONT = 'bb3273.ttf'
 
-WAY = os.getenv('APPDATA') + r'\..\Local\Games\pent\record.json'
+if system() == 'Windows':
+    WAY = os.getenv('APPDATA') + r'\..\Local\Games\pent\record.json'
+else:  # system() == 'Linux':
+    WAY = r'~/record/record.json'
 if not os.path.exists(os.path.dirname(WAY)):
     os.makedirs(os.path.dirname(WAY))
 
