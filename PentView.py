@@ -68,17 +68,17 @@ class PentView:  # view
         text_rect = text.get_rect(center=(constants.WINDOW_WIDTH/2, constants.WINDOW_HEIGHT/2))
         self.screen.blit(text, text_rect)
 
-    def draw_field(self):  # возможно есть смысл добавить возможность оставлять фигурам свои цвета
+    def draw_field(self):
         for line in range(len(self.field.field)):
             for point in range(len(self.field.field[line])):
                 if self.field.field[line][point]:
                     pygame.draw.rect(self.screen, self.field.field[line][point],
-                                     (constants.FRAME_THICKNESS + constants.POINT_SIZE * point,
+                                     (constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH + constants.POINT_SIZE * point,
                                       constants.FRAME_THICKNESS + constants.POINT_SIZE * line,
                                       constants.POINT_SIZE, constants.POINT_SIZE))
                 else:
                     pygame.draw.rect(self.screen, constants.COLORS['WHITE'],
-                                     (constants.FRAME_THICKNESS + constants.POINT_SIZE * point,
+                                     (constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH + constants.POINT_SIZE * point,
                                       constants.FRAME_THICKNESS + constants.POINT_SIZE * line,
                                       constants.POINT_SIZE, constants.POINT_SIZE))
 
@@ -87,48 +87,70 @@ class PentView:  # view
             for point in range(len(self.pent.figure.shape[line])):
                 if self.pent.figure.shape[line][point]:
                     pygame.draw.rect(self.screen, self.pent.figure.color,
-                                     (constants.FRAME_THICKNESS + (self.pent.figure_x + point) * constants.POINT_SIZE,
+                                     (constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH + (self.pent.figure_x + point) * constants.POINT_SIZE,
                                       constants.FRAME_THICKNESS + (self.pent.figure_y + line) * constants.POINT_SIZE,
                                       constants.POINT_SIZE, constants.POINT_SIZE))
 
     def draw_grid(self):
         for i in range(constants.FIELD_WIDTH):
             pygame.draw.line(self.screen, constants.COLORS['BLACK'],
-                             (constants.FRAME_THICKNESS + i * constants.POINT_SIZE - 1, constants.FRAME_THICKNESS),
-                             (constants.FRAME_THICKNESS + i * constants.POINT_SIZE - 1,
-                              constants.FRAME_THICKNESS + constants.FIELD_HEIGHT * constants.POINT_SIZE), 2)
+                             (constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH + i * constants.POINT_SIZE - 1, constants.FRAME_THICKNESS),
+                             (constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH + i * constants.POINT_SIZE - 1,
+                              constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH + constants.FIELD_HEIGHT * constants.POINT_SIZE), 2)
         for i in range(constants.FIELD_HEIGHT):
             pygame.draw.line(self.screen, constants.COLORS['BLACK'],
-                             (constants.FRAME_THICKNESS, constants.FRAME_THICKNESS + i * constants.POINT_SIZE - 1),
-                             (constants.FRAME_THICKNESS + constants.FIELD_WIDTH * constants.POINT_SIZE - 1,
+                             (constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH, constants.FRAME_THICKNESS + i * constants.POINT_SIZE - 1),
+                             (constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH + constants.FIELD_WIDTH * constants.POINT_SIZE - 1,
                               constants.FRAME_THICKNESS + i * constants.POINT_SIZE - 1), 2)
 
     def draw_score(self):
         font = pygame.font.Font(constants.FONT, constants.FONT_SIZE)
+        text_next = font.render('next:', False, constants.COLORS['WHITE'])
+        self.screen.blit(text_next, (constants.FRAME_THICKNESS + 10,
+                                      constants.FRAME_THICKNESS + 5))
         text_score = font.render('score:', False, constants.COLORS['WHITE'])
         self.screen.blit(text_score, (constants.FRAME_THICKNESS + 10,
-                                      constants.FIELD_HEIGHT * constants.POINT_SIZE +
-                                      constants.FRAME_THICKNESS + 5))
+                                      constants.FRAME_THICKNESS + 250))
         value_score = font.render(str(self.pent.score_inf.score), False, constants.COLORS['WHITE'])
         self.screen.blit(value_score, (constants.FRAME_THICKNESS + 10 + 140,
-                                       constants.FIELD_HEIGHT * constants.POINT_SIZE +
-                                       constants.FRAME_THICKNESS + 5))
+                                       constants.FRAME_THICKNESS + 250))
         text_record = font.render('record:', False, constants.COLORS['WHITE'])
         self.screen.blit(text_record, (constants.FRAME_THICKNESS + 10,
-                                       constants.FIELD_HEIGHT * constants.POINT_SIZE +
-                                       constants.FRAME_THICKNESS + 5 + constants.FONT_SIZE + 2))
+                                       constants.FRAME_THICKNESS + 250 + constants.FONT_SIZE + 2))
         value_record = font.render(str(self.pent.score_inf.record), False, constants.COLORS['WHITE'])
         self.screen.blit(value_record, (constants.FRAME_THICKNESS + 10 + 140,
-                                        constants.FIELD_HEIGHT * constants.POINT_SIZE +
-                                        constants.FRAME_THICKNESS + 5 + constants.FONT_SIZE + 2))
+                                        constants.FRAME_THICKNESS + 250 + constants.FONT_SIZE + 2))
         text_solved = font.render('solved:', False, constants.COLORS['WHITE'])
         self.screen.blit(text_solved, (constants.FRAME_THICKNESS + 10,
-                                       constants.FIELD_HEIGHT * constants.POINT_SIZE +
-                                       constants.FRAME_THICKNESS + 5 + 2 * (constants.FONT_SIZE + 2)))
+                                       constants.FRAME_THICKNESS + 250 + 2 * (constants.FONT_SIZE + 2)))
         value_solved = font.render(str(self.pent.score_inf.solved), False, constants.COLORS['WHITE'])
         self.screen.blit(value_solved, (constants.FRAME_THICKNESS + 10 + 140,
-                                        constants.FIELD_HEIGHT * constants.POINT_SIZE +
-                                        constants.FRAME_THICKNESS + 5 + 2 * (constants.FONT_SIZE + 2)))
+                                        constants.FRAME_THICKNESS + 250 + 2 * (constants.FONT_SIZE + 2)))
+
+    def draw_next(self):
+        rect = pygame.Rect((0, 0, constants.POINT_SIZE * constants.POINTS_PER_FIGURE,
+                            constants.POINT_SIZE * constants.POINTS_PER_FIGURE))
+        rect.center = ((constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH)/2, 150)
+        print(rect.top)
+        pygame.draw.rect(self.screen, constants.COLORS['WHITE'], rect)
+
+        for line in range(len(self.pent.next_figure.shape)):
+            for point in range(len(self.pent.next_figure.shape[line])):
+                if self.pent.next_figure.shape[line][point]:
+                    pygame.draw.rect(self.screen, self.pent.next_figure.color,
+                                     (rect.centerx + point * constants.POINT_SIZE,
+                                      rect.top + line * constants.POINT_SIZE,
+                                      constants.POINT_SIZE, constants.POINT_SIZE))
+
+        for i in range(constants.POINTS_PER_FIGURE):
+            pygame.draw.line(self.screen, constants.COLORS['BLACK'],
+                             (rect.left + i * constants.POINT_SIZE - 1, rect.top),
+                             (rect.left + i * constants.POINT_SIZE - 1, rect.bottom), 2)
+        for i in range(constants.POINTS_PER_FIGURE):
+            pygame.draw.line(self.screen, constants.COLORS['BLACK'],
+                             (rect.left, rect.top + i * constants.POINT_SIZE - 1),
+                             (rect.left + constants.POINTS_PER_FIGURE * constants.POINT_SIZE - 1,
+                              rect.top + i * constants.POINT_SIZE - 1), 2)
 
     def process_move(self):
         self.pent.fall_figure(self.time)
@@ -140,6 +162,7 @@ class PentView:  # view
         else:
             self.draw_field()
             self.draw_figure()
+            self.draw_next()
             if constants.NET:
                 self.draw_grid()
             self.draw_score()
