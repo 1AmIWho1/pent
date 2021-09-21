@@ -91,17 +91,17 @@ class PentView:  # view
                                       constants.FRAME_THICKNESS + (self.pent.figure_y + line) * constants.POINT_SIZE,
                                       constants.POINT_SIZE, constants.POINT_SIZE))
 
-    def draw_net(self):
+    def draw_grid(self):
         for i in range(constants.FIELD_WIDTH):
             pygame.draw.line(self.screen, constants.COLORS['BLACK'],
                              (constants.FRAME_THICKNESS + i * constants.POINT_SIZE - 1, constants.FRAME_THICKNESS),
                              (constants.FRAME_THICKNESS + i * constants.POINT_SIZE - 1,
-                              constants.FRAME_THICKNESS + constants.FIELD_HEIGHT * constants.POINT_SIZE))
+                              constants.FRAME_THICKNESS + constants.FIELD_HEIGHT * constants.POINT_SIZE), 2)
         for i in range(constants.FIELD_HEIGHT):
             pygame.draw.line(self.screen, constants.COLORS['BLACK'],
                              (constants.FRAME_THICKNESS, constants.FRAME_THICKNESS + i * constants.POINT_SIZE - 1),
                              (constants.FRAME_THICKNESS + constants.FIELD_WIDTH * constants.POINT_SIZE - 1,
-                              constants.FRAME_THICKNESS + i * constants.POINT_SIZE - 1))
+                              constants.FRAME_THICKNESS + i * constants.POINT_SIZE - 1), 2)
 
     def draw_score(self):
         font = pygame.font.Font(constants.FONT, constants.FONT_SIZE)
@@ -141,7 +141,7 @@ class PentView:  # view
             self.draw_field()
             self.draw_figure()
             if constants.NET:
-                self.draw_net()
+                self.draw_grid()
             self.draw_score()
         pygame.display.flip()
 

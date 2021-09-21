@@ -1,4 +1,3 @@
-from Figure import Figure
 import constants
 
 

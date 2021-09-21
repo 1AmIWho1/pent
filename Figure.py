@@ -16,7 +16,7 @@ class Figure:
             figures = json.load(figures_json)
             self.shape = random.choice(figures)
         for i in range(random.randint(0, 3)):
-            self.rotate(1)
+            self.rotate(True)
 
     def check_point(self, x, y):
         try:
@@ -36,32 +36,6 @@ class Figure:
         if self.check_point(x, y - 1):
             return True
         return False
-
-    def get_random_shape(self):  # need to be fixed
-        self.shape[POINTS_PER_FIGURE // 2][POINTS_PER_FIGURE // 2] = True
-        for i in range(POINTS_PER_FIGURE - 1):
-            while True:
-                tmp_x = random.randint(0, POINTS_PER_FIGURE - 1)
-                tmp_y = random.randint(0, POINTS_PER_FIGURE - 1)
-                if not self.shape[tmp_y][tmp_x] and self.is_near_point_filled(tmp_x, tmp_y):
-                    self.shape[tmp_y][tmp_x] = True
-                    break
-        while True:
-            try:
-                self.shape.remove([False for i in range(POINTS_PER_FIGURE)])
-            except ValueError:
-                break
-        point = 0
-        while point < len(self.shape[0]):
-            tmp = 0
-            for line in range(len(self.shape)):
-                if not self.shape[line][point]:
-                    tmp += 1
-            if tmp == len(self.shape):
-                for line in range(len(self.shape)):
-                    self.shape[line].pop(point)
-                point -= 1
-            point += 1
 
     def rotate(self, direction: bool):
         if direction:
