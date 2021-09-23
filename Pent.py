@@ -13,12 +13,14 @@ class Pent:  # controller
         self.score_inf = Score()
         self.accelerate_figure(False)
         self.figure = Figure()
+        self.next_figure = Figure()
         self.figure_x = (constants.FIELD_WIDTH - len(self.figure.shape[0])) // 2  # левая точка фигуры
         self.figure_y = 0  # верхняя точка фигуры
 
     def add_new_figure(self):  # добавляет новую фигуру сверху посередине
         self.accelerate_figure(False)
-        self.figure = Figure()
+        self.figure = self.next_figure
+        self.next_figure = Figure()
         self.figure_x = (constants.FIELD_WIDTH - len(self.figure.shape[0])) // 2
         self.figure_y = 0
 
