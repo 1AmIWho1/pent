@@ -73,47 +73,49 @@ class PentView:  # view
             for point in range(len(self.field.field[line])):
                 if self.field.field[line][point]:
                     pygame.draw.rect(self.screen, self.field.field[line][point],
-                                     (constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH + constants.POINT_SIZE * point,
-                                      constants.FRAME_THICKNESS + constants.POINT_SIZE * line,
-                                      constants.POINT_SIZE, constants.POINT_SIZE))
+                                     (constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH +
+                                      constants.POINT_SIZE * point, constants.FRAME_THICKNESS +
+                                      constants.POINT_SIZE * line, constants.POINT_SIZE, constants.POINT_SIZE))
                 else:
                     pygame.draw.rect(self.screen, constants.COLORS['WHITE'],
-                                     (constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH + constants.POINT_SIZE * point,
-                                      constants.FRAME_THICKNESS + constants.POINT_SIZE * line,
-                                      constants.POINT_SIZE, constants.POINT_SIZE))
+                                     (constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH +
+                                      constants.POINT_SIZE * point, constants.FRAME_THICKNESS +
+                                      constants.POINT_SIZE * line, constants.POINT_SIZE, constants.POINT_SIZE))
 
     def draw_figure(self):
         for line in range(len(self.pent.figure.shape)):
             for point in range(len(self.pent.figure.shape[line])):
                 if self.pent.figure.shape[line][point]:
                     pygame.draw.rect(self.screen, self.pent.figure.color,
-                                     (constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH + (self.pent.figure_x + point) * constants.POINT_SIZE,
+                                     (constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH +
+                                      (self.pent.figure_x + point) * constants.POINT_SIZE,
                                       constants.FRAME_THICKNESS + (self.pent.figure_y + line) * constants.POINT_SIZE,
                                       constants.POINT_SIZE, constants.POINT_SIZE))
 
     def draw_grid(self):
         for i in range(constants.FIELD_WIDTH):
             pygame.draw.line(self.screen, constants.COLORS['BLACK'],
-                             (constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH + i * constants.POINT_SIZE - 1, constants.FRAME_THICKNESS),
                              (constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH + i * constants.POINT_SIZE - 1,
-                              constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH + constants.FIELD_HEIGHT * constants.POINT_SIZE), 2)
+                              constants.FRAME_THICKNESS),
+                             (constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH + i * constants.POINT_SIZE - 1,
+                              constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH +
+                              constants.FIELD_HEIGHT * constants.POINT_SIZE), 2)
         for i in range(constants.FIELD_HEIGHT):
             pygame.draw.line(self.screen, constants.COLORS['BLACK'],
-                             (constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH, constants.FRAME_THICKNESS + i * constants.POINT_SIZE - 1),
-                             (constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH + constants.FIELD_WIDTH * constants.POINT_SIZE - 1,
+                             (constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH, constants.FRAME_THICKNESS +
+                              i * constants.POINT_SIZE - 1),
+                             (constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH +
+                              constants.FIELD_WIDTH * constants.POINT_SIZE - 1,
                               constants.FRAME_THICKNESS + i * constants.POINT_SIZE - 1), 2)
 
     def draw_score(self):
         font = pygame.font.Font(constants.FONT, constants.FONT_SIZE)
         text_next = font.render('next:', False, constants.COLORS['WHITE'])
-        self.screen.blit(text_next, (constants.FRAME_THICKNESS + 10,
-                                      constants.FRAME_THICKNESS + 5))
+        self.screen.blit(text_next, (constants.FRAME_THICKNESS + 10, constants.FRAME_THICKNESS + 25))
         text_score = font.render('score:', False, constants.COLORS['WHITE'])
-        self.screen.blit(text_score, (constants.FRAME_THICKNESS + 10,
-                                      constants.FRAME_THICKNESS + 250))
+        self.screen.blit(text_score, (constants.FRAME_THICKNESS + 10, constants.FRAME_THICKNESS + 250))
         value_score = font.render(str(self.pent.score_inf.score), False, constants.COLORS['WHITE'])
-        self.screen.blit(value_score, (constants.FRAME_THICKNESS + 10 + 140,
-                                       constants.FRAME_THICKNESS + 250))
+        self.screen.blit(value_score, (constants.FRAME_THICKNESS + 10 + 140, constants.FRAME_THICKNESS + 250))
         text_record = font.render('record:', False, constants.COLORS['WHITE'])
         self.screen.blit(text_record, (constants.FRAME_THICKNESS + 10,
                                        constants.FRAME_THICKNESS + 250 + constants.FONT_SIZE + 2))
@@ -131,16 +133,16 @@ class PentView:  # view
         rect = pygame.Rect((0, 0, constants.POINT_SIZE * constants.POINTS_PER_FIGURE,
                             constants.POINT_SIZE * constants.POINTS_PER_FIGURE))
         rect.center = ((constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH)/2, 150)
-        print(rect.top)
         pygame.draw.rect(self.screen, constants.COLORS['WHITE'], rect)
 
         for line in range(len(self.pent.next_figure.shape)):
             for point in range(len(self.pent.next_figure.shape[line])):
                 if self.pent.next_figure.shape[line][point]:
                     pygame.draw.rect(self.screen, self.pent.next_figure.color,
-                                     (rect.centerx + point * constants.POINT_SIZE,
-                                      rect.top + line * constants.POINT_SIZE,
-                                      constants.POINT_SIZE, constants.POINT_SIZE))
+                                     (rect.left + (point + len(self.pent.next_figure.shape) // 2) *
+                                      constants.POINT_SIZE,
+                                      rect.top + (line + len(self.pent.next_figure.shape[0]) // 2) *
+                                      constants.POINT_SIZE, constants.POINT_SIZE, constants.POINT_SIZE))
 
         for i in range(constants.POINTS_PER_FIGURE):
             pygame.draw.line(self.screen, constants.COLORS['BLACK'],
