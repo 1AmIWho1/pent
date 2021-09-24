@@ -147,3 +147,4 @@ cython_debug/
 #gitignore by me
 record.json
 .idea
+setup.py
