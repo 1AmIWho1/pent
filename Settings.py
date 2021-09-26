@@ -27,7 +27,7 @@ class Settings:
     def update_settings(self, new_settings=default_settings):
         self.settings = new_settings
         with open(constants.WAY_SETTINGS, 'w') as file:
-            json.dump(str(self.settings), file)
+            json.dump(self.settings, file)
 
 
 if __name__ == '__main__':
