@@ -6,8 +6,8 @@ class Button:
 
     def __init__(self, func, text, font, screen, x, y):
         self.text = font.render(text, False, constants.COLORS['WHITE'])
-        self.screen = screen
         self.rect = self.text.get_rect(midtop=(x, y))
+        self.screen = screen
         self.func = func
 
     def draw(self):

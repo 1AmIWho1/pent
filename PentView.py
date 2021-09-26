@@ -1,10 +1,10 @@
+from Button import Button
+from InputBox import InputBox
 from Field import Field
 from Pent import Pent
 from Menu import Menu
 import constants
 import pygame
-
-from Button import Button
 
 
 class PentView:  # view
@@ -13,7 +13,6 @@ class PentView:  # view
         self.time = 0
         self.clock = pygame.time.Clock()
         self.field = Field()
-        self.menu = Menu()
         self.pent = Pent(self.field)
         pygame.init()
         pygame.font.init()
@@ -22,8 +21,11 @@ class PentView:  # view
         self.gameover = False
         self.game_on = False
         self.menu_on = False
-        self.button_restart = Button(self.restart, 'restart', pygame.font.Font(constants.FONT, 50), self.screen,
-                                     constants.WINDOW_WIDTH / 2, 400)
+        button_restart = Button(self.restart, 'restart', pygame.font.Font(constants.FONT, 50), self.screen,
+                                constants.WINDOW_WIDTH / 2, 400)
+        height = InputBox('height:', pygame.font.Font(constants.FONT, 50), self.screen, 50, 50, 100)
+        width = InputBox('width:', pygame.font.Font(constants.FONT, 50), self.screen, 50, 110, 100)
+        self.menu = Menu(buttons=[button_restart], input_boxes=[height, width])
 
     def restart(self):
         self.time = 0
@@ -62,7 +64,8 @@ class PentView:  # view
                             self.game_on = True
             elif self.menu_on:
                 if event.type == pygame.MOUSEBUTTONUP:
-                    self.button_restart.click(event)
+                    for button in self.menu.buttons:
+                        button.click(event)
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         self.menu_on = False
@@ -72,8 +75,10 @@ class PentView:  # view
         text = font.render(self.menu.sentence, False, constants.COLORS['WHITE'])
         text_rect = text.get_rect(center=(constants.WINDOW_WIDTH / 2, constants.WINDOW_HEIGHT / 2))
         self.screen.blit(text, text_rect)
-
-        self.button_restart.draw()
+        for button in self.menu.buttons:
+            button.draw()
+        for input_box in self.menu.input_boxes:
+            input_box.draw()
 
     def draw_field(self):
         for line in range(len(self.field.field)):
