@@ -4,6 +4,8 @@ from Menu import Menu
 import constants
 import pygame
 
+from Button import Button
+
 
 class PentView:  # view
 
@@ -20,6 +22,8 @@ class PentView:  # view
         self.gameover = False
         self.game_on = False
         self.menu_on = False
+        self.button_restart = Button(self.restart, 'restart', pygame.font.Font(constants.FONT, 50), self.screen,
+                                     constants.WINDOW_WIDTH / 2, 400)
 
     def restart(self):
         self.time = 0
@@ -57,16 +61,19 @@ class PentView:  # view
                         if event.key == pygame.K_SPACE:
                             self.game_on = True
             elif self.menu_on:
+                if event.type == pygame.MOUSEBUTTONUP:
+                    self.button_restart.click(event)
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         self.menu_on = False
-                        self.game_on = True
 
     def draw_menu(self):
         font = pygame.font.Font(constants.FONT, 50)
         text = font.render(self.menu.sentence, False, constants.COLORS['WHITE'])
-        text_rect = text.get_rect(center=(constants.WINDOW_WIDTH/2, constants.WINDOW_HEIGHT/2))
+        text_rect = text.get_rect(center=(constants.WINDOW_WIDTH / 2, constants.WINDOW_HEIGHT / 2))
         self.screen.blit(text, text_rect)
+
+        self.button_restart.draw()
 
     def draw_field(self):
         for line in range(len(self.field.field)):
@@ -132,7 +139,7 @@ class PentView:  # view
     def draw_next(self):
         rect = pygame.Rect((0, 0, constants.POINT_SIZE * constants.POINTS_PER_FIGURE,
                             constants.POINT_SIZE * constants.POINTS_PER_FIGURE))
-        rect.center = ((constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH)/2, 150)
+        rect.center = ((constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH) / 2, 150)
         pygame.draw.rect(self.screen, constants.COLORS['WHITE'], rect)
 
         for line in range(len(self.pent.next_figure.shape)):
