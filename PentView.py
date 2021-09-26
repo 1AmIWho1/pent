@@ -165,7 +165,7 @@ class PentView:  # view
             self.draw_field()
             self.draw_figure()
             self.draw_next()
-            if constants.NET:
+            if constants.GRID:
                 self.draw_grid()
             self.draw_score()
         pygame.display.flip()
