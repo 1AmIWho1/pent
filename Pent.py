@@ -15,7 +15,7 @@ class Pent:  # controller
         self.figure = Figure()
         self.next_figure = Figure()
         self.figure_x = (self.field.width - len(self.figure.shape[0])) // 2  # левая точка фигуры
-        self.figure_y = 0  # верхняя точка фигуры
+        self.figure_y = -self.figure.get_empty_top()  # верхняя точка фигуры
 
     def add_new_figure(self):  # добавляет новую фигуру сверху посередине
         self.accelerate_figure(False)
@@ -58,14 +58,32 @@ class Pent:  # controller
         elif collision:
             self.stop_figure()
             self.add_new_figure()
+        '''
+        for i in range(len(self.field.field)):
+            for j in range(len(self.field.field[0])):
+                if self.figure_y <= i < self.figure_y + constants.POINTS_PER_FIGURE and self.figure_x <= j < self.figure_x + constants.POINTS_PER_FIGURE:
+                    if self.figure.shape[i - self.figure_y][j - self.figure_x]:
+                        print('X', end='')
+                    else:
+                        print('-', end='')
+                else:
+                    if self.field.field[i][j]:
+                        print('O', end='')
+                    else:
+                        print('_', end='')
+            print()
+        print()
+        '''
 
     def check_collision_left(self):  # проверяет, не наезжает ли одна движущаяся фигура на что-либо слева
-        if 0 > self.figure_x:
+        if 0 > self.figure_x + self.figure.get_empty_left():
             return True
         try:
             line = self.figure_y
-            while line < self.figure_y + len(self.figure.shape):
-                for point in range(len(self.figure.shape[0])):
+            empty_left = self.figure.get_empty_left()
+            max_width = self.figure.get_width()
+            while line < self.figure_y + self.figure.get_height():
+                for point in range(empty_left + 1, empty_left + max_width):
                     if self.figure.shape[line - self.figure_y][point] and self.field.field[line][self.figure_x + point]:
                         return True
                 line += 1
@@ -74,12 +92,14 @@ class Pent:  # controller
         return False
 
     def check_collision_right(self):    # проверяет, не наезжает ли одна движущаяся фигура на что-либо справа
-        if self.figure_x + len(self.figure.shape[0]) > self.field.width:
+        if self.figure_x + self.figure.get_empty_right() > self.field.width:
             return True
         try:
             line = self.figure_y
+            empty_left = self.figure.get_empty_left()
+            max_width = self.figure.get_width()
             while line < self.figure_y + len(self.figure.shape):
-                for point in range(len(self.figure.shape[0])):
+                for point in range(empty_left, empty_left + max_width):
                     if self.figure.shape[line - self.figure_y][point] and self.field.field[line][self.figure_x + point]:
                         return True
                 line += 1
@@ -88,13 +108,16 @@ class Pent:  # controller
         return False
 
     def check_collision_down(self):
-        if self.figure_y + len(self.figure.shape) > self.field.height:
+        if self.figure_y - self.figure.get_empty_top() + self.figure.get_height() > self.field.height:
             return True
         try:
+            empty_left = self.figure.get_empty_left()
+            max_width = self.figure.get_width()
             line = self.figure_y + 1
             while line < self.figure_y + 1 + len(self.figure.shape):
-                for point in range(len(self.figure.shape[0])):  # len(self.figure.shape[0]) - ширина фигуры
-                    if self.figure.shape[line - (self.figure_y + 1)][point] and self.field.field[line][self.figure_x + point]:
+                for point in range(empty_left, empty_left + max_width):
+                    if self.figure.shape[line - self.figure_y - 1][point] and \
+                            self.field.field[line][self.figure_x + point]:
                         return True
                 line += 1
         except IndexError:

@@ -208,10 +208,8 @@ class PentView:  # view
             for point in range(len(self.pent.next_figure.shape[line])):
                 if self.pent.next_figure.shape[line][point]:
                     pygame.draw.rect(self.screen, self.pent.next_figure.color,
-                                     (rect.left + (point + len(self.pent.next_figure.shape) // 2) *
-                                      constants.POINT_SIZE,
-                                      rect.top + (line + len(self.pent.next_figure.shape[0]) // 2) *
-                                      constants.POINT_SIZE, constants.POINT_SIZE, constants.POINT_SIZE))
+                                     (rect.left + point * constants.POINT_SIZE, rect.top + line * constants.POINT_SIZE,
+                                      constants.POINT_SIZE, constants.POINT_SIZE))
 
         for i in range(constants.POINTS_PER_FIGURE):
             pygame.draw.line(self.screen, constants.COLORS['BLACK'],
