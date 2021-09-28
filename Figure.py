@@ -26,8 +26,8 @@ class Figure:
                     start = j
                     break
         end = 0
-        for j in range(constants.POINTS_PER_FIGURE - 1, 0, -1):
-            for i in range(constants.POINTS_PER_FIGURE - 1, 0, -1):
+        for j in range(constants.POINTS_PER_FIGURE - 1, -1, -1):
+            for i in range(constants.POINTS_PER_FIGURE - 1, -1, -1):
                 if self.shape[i][j]:
                     end = j
                     break
