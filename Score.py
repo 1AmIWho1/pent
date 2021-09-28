@@ -8,10 +8,10 @@ class Score:
         self.score = 0
         self.solved = 0
         try:
-            with open(constants.WAY, 'r') as r:
+            with open(constants.WAY_RECORD, 'r') as r:
                 self.record = json.load(r)
         except FileNotFoundError:
-            with open(constants.WAY, 'w') as r:
+            with open(constants.WAY_RECORD, 'w') as r:
                 json.dump(0, r)
             self.record = 0
 
@@ -26,7 +26,7 @@ class Score:
 
     def check_record(self):
         if self.score > self.record:
-            with open(constants.WAY, 'w') as record_json:
+            with open(constants.WAY_RECORD, 'w') as record_json:
                 json.dump(self.score, record_json)
             return True
         return False

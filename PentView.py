@@ -1,6 +1,9 @@
+from Button import Button
+from InputBox import InputBox
 from Field import Field
 from Pent import Pent
 from Menu import Menu
+from Settings import Settings
 import constants
 import pygame
 
@@ -8,22 +11,38 @@ import pygame
 class PentView:  # view
 
     def __init__(self):
+        self.settings = Settings()
         self.time = 0
         self.clock = pygame.time.Clock()
-        self.field = Field()
-        self.menu = Menu()
+        self.field = Field(self.settings.settings['field_width'], self.settings.settings['field_height'],
+                           self.settings.settings['stop_color'])
         self.pent = Pent(self.field)
         pygame.init()
         pygame.font.init()
-        self.screen = pygame.display.set_mode((constants.WINDOW_WIDTH, constants.WINDOW_HEIGHT))
+        self.screen = pygame.display.set_mode((self.settings.window_width, self.settings.window_height))
         pygame.display.set_caption('pent')
         self.gameover = False
         self.game_on = False
         self.menu_on = False
+        buttons = {
+            'restart': Button(self.restart, 'restart', pygame.font.Font(constants.FONT, 50), self.screen,
+                              self.settings.window_width / 2, self.settings.window_height - 90),
+            'button_save_settings': Button(self.save_settings, 'save', pygame.font.Font(constants.FONT, 50),
+                                           self.screen, 420, 67)
+        }
+        input_boxes = {
+            'height': InputBox('height: ', pygame.font.Font(constants.FONT, 50), self.screen, 35, 35, 70,
+                               str(self.settings.settings['field_height']), self.track_input_box, min=15, max=35),
+            'width': InputBox('width: ', pygame.font.Font(constants.FONT, 50), self.screen, 35, 95, 70,
+                              str(self.settings.settings['field_width']), self.track_input_box, min=10, max=20)
+        }
+        self.menu = Menu(buttons=buttons, input_boxes=input_boxes)
+        self.active_input_box = None
 
     def restart(self):
         self.time = 0
-        self.field = Field()
+        self.field = Field(self.settings.settings['field_width'], self.settings.settings['field_height'],
+                           self.settings.settings['stop_color'])
         self.pent = Pent(self.field)
 
     def process_events(self):
@@ -57,16 +76,66 @@ class PentView:  # view
                         if event.key == pygame.K_SPACE:
                             self.game_on = True
             elif self.menu_on:
+                if event.type == pygame.MOUSEBUTTONUP:
+                    for button in self.menu.buttons.values():
+                        button.click(event)
+                    for input_box in self.menu.input_boxes.values():
+                        input_box.click(event)
                 if event.type == pygame.KEYDOWN:
+                    if self.active_input_box:
+                        if event.key == pygame.K_0:
+                            self.active_input_box.write('0')
+                        if event.key == pygame.K_1:
+                            self.active_input_box.write('1')
+                        if event.key == pygame.K_2:
+                            self.active_input_box.write('2')
+                        if event.key == pygame.K_3:
+                            self.active_input_box.write('3')
+                        if event.key == pygame.K_4:
+                            self.active_input_box.write('4')
+                        if event.key == pygame.K_5:
+                            self.active_input_box.write('5')
+                        if event.key == pygame.K_6:
+                            self.active_input_box.write('6')
+                        if event.key == pygame.K_7:
+                            self.active_input_box.write('7')
+                        if event.key == pygame.K_8:
+                            self.active_input_box.write('8')
+                        if event.key == pygame.K_9:
+                            self.active_input_box.write('9')
+                        if event.key == pygame.K_BACKSPACE:
+                            self.active_input_box.input = self.active_input_box.input[:-1]
+                        if event.key == pygame.K_RETURN:
+                            self.active_input_box.stop_input()
+                            self.active_input_box = None
                     if event.key == pygame.K_ESCAPE:
                         self.menu_on = False
-                        self.game_on = True
+
+    def track_input_box(self, input_box):
+        self.active_input_box = input_box
+
+    def save_settings(self):
+        new_settings = self.settings.default_settings
+        self.menu.update()
+        new_settings['field_width'] = int(self.menu.input_boxes['width'].input)
+        new_settings['field_height'] = int(self.menu.input_boxes['height'].input)
+        tmp = self.settings.window_width
+        self.settings.update_settings(new_settings)
+        self.menu.buttons['restart'].rect = self.menu.buttons['restart'].rect.move((self.settings.window_width - tmp) /
+                                                                                   2, self.settings.window_height - 90 -
+                                                                                   self.menu.buttons['restart'].rect.y)
+        self.screen = pygame.display.set_mode((self.settings.window_width, self.settings.window_height))
+        self.restart()
 
     def draw_menu(self):
         font = pygame.font.Font(constants.FONT, 50)
         text = font.render(self.menu.sentence, False, constants.COLORS['WHITE'])
-        text_rect = text.get_rect(center=(constants.WINDOW_WIDTH/2, constants.WINDOW_HEIGHT/2))
+        text_rect = text.get_rect(center=(self.settings.window_width / 2, self.settings.window_height / 2))
         self.screen.blit(text, text_rect)
+        for button in self.menu.buttons.values():
+            button.draw()
+        for input_box in self.menu.input_boxes.values():
+            input_box.draw()
 
     def draw_field(self):
         for line in range(len(self.field.field)):
@@ -93,19 +162,19 @@ class PentView:  # view
                                       constants.POINT_SIZE, constants.POINT_SIZE))
 
     def draw_grid(self):
-        for i in range(constants.FIELD_WIDTH):
+        for i in range(self.settings.settings['field_width']):
             pygame.draw.line(self.screen, constants.COLORS['BLACK'],
                              (constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH + i * constants.POINT_SIZE - 1,
                               constants.FRAME_THICKNESS),
                              (constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH + i * constants.POINT_SIZE - 1,
                               constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH +
                               constants.FIELD_HEIGHT * constants.POINT_SIZE), 2)
-        for i in range(constants.FIELD_HEIGHT):
+        for i in range(self.settings.settings['field_height']):
             pygame.draw.line(self.screen, constants.COLORS['BLACK'],
                              (constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH, constants.FRAME_THICKNESS +
                               i * constants.POINT_SIZE - 1),
                              (constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH +
-                              constants.FIELD_WIDTH * constants.POINT_SIZE - 1,
+                              self.settings.settings['field_width'] * constants.POINT_SIZE - 1,
                               constants.FRAME_THICKNESS + i * constants.POINT_SIZE - 1), 2)
 
     def draw_score(self):
@@ -132,7 +201,7 @@ class PentView:  # view
     def draw_next(self):
         rect = pygame.Rect((0, 0, constants.POINT_SIZE * constants.POINTS_PER_FIGURE,
                             constants.POINT_SIZE * constants.POINTS_PER_FIGURE))
-        rect.center = ((constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH)/2, 150)
+        rect.center = ((constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH) / 2, 150)
         pygame.draw.rect(self.screen, constants.COLORS['WHITE'], rect)
 
         for line in range(len(self.pent.next_figure.shape)):
@@ -165,7 +234,7 @@ class PentView:  # view
             self.draw_field()
             self.draw_figure()
             self.draw_next()
-            if constants.NET:
+            if constants.GRID:
                 self.draw_grid()
             self.draw_score()
         pygame.display.flip()

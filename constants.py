@@ -1,9 +1,19 @@
 import pygame
 import random
 import os
+import json
 from platform import system
 
-NET = True
+if system() == 'Windows':
+    WAY_RECORD = os.getenv('APPDATA') + r'\..\Local\Games\pent\record.json'
+    WAY_SETTINGS = os.getenv('APPDATA') + r'\..\Local\Games\pent\settings.json'
+else:  # system() == 'Linux':
+    WAY_RECORD = r'~/record/record.json'
+    WAY_SETTINGS = r'~/record/settings.json'
+if not os.path.exists(os.path.dirname(WAY_RECORD)):
+    os.makedirs(os.path.dirname(WAY_RECORD))
+
+GRID = True
 STOP_COLOR = False
 
 POINTS_PER_FIGURE = 5
@@ -28,14 +38,6 @@ WINDOW_HEIGHT = FIELD_HEIGHT * POINT_SIZE + 2 * FRAME_THICKNESS
 
 FONT_SIZE = 34
 FONT = 'bb3273.ttf'
-
-if system() == 'Windows':
-    WAY = os.getenv('APPDATA') + r'\..\Local\Games\pent\record.json'
-else:  # system() == 'Linux':
-    WAY = r'~/record/record.json'
-if not os.path.exists(os.path.dirname(WAY)):
-    os.makedirs(os.path.dirname(WAY))
-
 
 COLORS = {
     'RED': pygame.Color(255, 0, 0),

@@ -14,14 +14,14 @@ class Pent:  # controller
         self.accelerate_figure(False)
         self.figure = Figure()
         self.next_figure = Figure()
-        self.figure_x = (constants.FIELD_WIDTH - len(self.figure.shape[0])) // 2  # левая точка фигуры
+        self.figure_x = (self.field.width - len(self.figure.shape[0])) // 2  # левая точка фигуры
         self.figure_y = 0  # верхняя точка фигуры
 
     def add_new_figure(self):  # добавляет новую фигуру сверху посередине
         self.accelerate_figure(False)
         self.figure = self.next_figure
         self.next_figure = Figure()
-        self.figure_x = (constants.FIELD_WIDTH - len(self.figure.shape[0])) // 2
+        self.figure_x = (self.field.width - len(self.figure.shape[0])) // 2
         self.figure_y = 0
 
     def stop_figure(self):  # останавливает фигуру и записывает ее в поле
@@ -74,7 +74,7 @@ class Pent:  # controller
         return False
 
     def check_collision_right(self):    # проверяет, не наезжает ли одна движущаяся фигура на что-либо справа
-        if self.figure_x + len(self.figure.shape[0]) > constants.FIELD_WIDTH:
+        if self.figure_x + len(self.figure.shape[0]) > self.field.width:
             return True
         try:
             line = self.figure_y
@@ -88,7 +88,7 @@ class Pent:  # controller
         return False
 
     def check_collision_down(self):
-        if self.figure_y + len(self.figure.shape) > constants.FIELD_HEIGHT:
+        if self.figure_y + len(self.figure.shape) > self.field.height:
             return True
         try:
             line = self.figure_y + 1
@@ -103,7 +103,7 @@ class Pent:  # controller
 
     def check_and_stop(self):
         line = 0
-        while line < constants.FIELD_HEIGHT:
+        while line < self.field.height:
             try:
                 self.field.field[line].index(False)
             except ValueError:
