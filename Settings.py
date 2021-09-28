@@ -14,18 +14,25 @@ class Settings:
 
     def __init__(self):
         self.settings = self.default_settings
-        # self.update_settings(self.default_settings)
+        self.window_width = self.settings['field_width'] * constants.POINT_SIZE + 2 * constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH
+        self.window_height = self.settings['field_height'] * constants.POINT_SIZE + 2 * constants.FRAME_THICKNESS
         self.upload_settings()
 
     def upload_settings(self):
         try:
             with open(constants.WAY_SETTINGS, 'r') as file:
-                self.settings = json.load(file)
+                data = json.load(file)
+                if data.keys() == self.default_settings.keys():
+                    self.update_settings(data)
+                else:
+                    self.update_settings()
         except FileNotFoundError:
             self.update_settings()
 
     def update_settings(self, new_settings=default_settings):
         self.settings = new_settings
+        self.window_width = self.settings['field_width'] * constants.POINT_SIZE + 2 * constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH
+        self.window_height = self.settings['field_height'] * constants.POINT_SIZE + 2 * constants.FRAME_THICKNESS
         with open(constants.WAY_SETTINGS, 'w') as file:
             json.dump(self.settings, file)
 

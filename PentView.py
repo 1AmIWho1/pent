@@ -19,22 +19,22 @@ class PentView:  # view
         self.pent = Pent(self.field)
         pygame.init()
         pygame.font.init()
-        self.screen = pygame.display.set_mode((constants.WINDOW_WIDTH, constants.WINDOW_HEIGHT))
+        self.screen = pygame.display.set_mode((self.settings.window_width, self.settings.window_height))
         pygame.display.set_caption('pent')
         self.gameover = False
         self.game_on = False
         self.menu_on = False
         buttons = {
             'restart': Button(self.restart, 'restart', pygame.font.Font(constants.FONT, 50), self.screen,
-                              constants.WINDOW_WIDTH / 2, 400),
+                              self.settings.window_width / 2, self.settings.window_height - 90),
             'button_save_settings': Button(self.save_settings, 'save', pygame.font.Font(constants.FONT, 50),
-                                           self.screen, 450, 90)
+                                           self.screen, 420, 67)
         }
         input_boxes = {
-            'height': InputBox('height: ', pygame.font.Font(constants.FONT, 50), self.screen, 50, 50, 70,
-                               str(self.settings.settings['field_height']), self.track_input_box),
-            'width': InputBox('width: ', pygame.font.Font(constants.FONT, 50), self.screen, 50, 110, 70,
-                              str(self.settings.settings['field_width']), self.track_input_box)
+            'height': InputBox('height: ', pygame.font.Font(constants.FONT, 50), self.screen, 35, 35, 70,
+                               str(self.settings.settings['field_height']), self.track_input_box, min=15, max=35),
+            'width': InputBox('width: ', pygame.font.Font(constants.FONT, 50), self.screen, 35, 95, 70,
+                              str(self.settings.settings['field_width']), self.track_input_box, min=10, max=20)
         }
         self.menu = Menu(buttons=buttons, input_boxes=input_boxes)
         self.active_input_box = None
@@ -114,17 +114,23 @@ class PentView:  # view
     def track_input_box(self, input_box):
         self.active_input_box = input_box
 
-    def save_settings(self):  # нужно доделать и зарефакторить весь код, чтобы при изменении окна меню и счет отображались адекватно
+    def save_settings(self):
         new_settings = self.settings.default_settings
+        self.menu.update()
         new_settings['field_width'] = int(self.menu.input_boxes['width'].input)
         new_settings['field_height'] = int(self.menu.input_boxes['height'].input)
+        tmp = self.settings.window_width
         self.settings.update_settings(new_settings)
+        self.menu.buttons['restart'].rect = self.menu.buttons['restart'].rect.move((self.settings.window_width - tmp) /
+                                                                                   2, self.settings.window_height - 90 -
+                                                                                   self.menu.buttons['restart'].rect.y)
+        self.screen = pygame.display.set_mode((self.settings.window_width, self.settings.window_height))
         self.restart()
 
     def draw_menu(self):
         font = pygame.font.Font(constants.FONT, 50)
         text = font.render(self.menu.sentence, False, constants.COLORS['WHITE'])
-        text_rect = text.get_rect(center=(constants.WINDOW_WIDTH / 2, constants.WINDOW_HEIGHT / 2))
+        text_rect = text.get_rect(center=(self.settings.window_width / 2, self.settings.window_height / 2))
         self.screen.blit(text, text_rect)
         for button in self.menu.buttons.values():
             button.draw()
@@ -156,19 +162,19 @@ class PentView:  # view
                                       constants.POINT_SIZE, constants.POINT_SIZE))
 
     def draw_grid(self):
-        for i in range(constants.FIELD_WIDTH):
+        for i in range(self.settings.settings['field_width']):
             pygame.draw.line(self.screen, constants.COLORS['BLACK'],
                              (constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH + i * constants.POINT_SIZE - 1,
                               constants.FRAME_THICKNESS),
                              (constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH + i * constants.POINT_SIZE - 1,
                               constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH +
                               constants.FIELD_HEIGHT * constants.POINT_SIZE), 2)
-        for i in range(constants.FIELD_HEIGHT):
+        for i in range(self.settings.settings['field_height']):
             pygame.draw.line(self.screen, constants.COLORS['BLACK'],
                              (constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH, constants.FRAME_THICKNESS +
                               i * constants.POINT_SIZE - 1),
                              (constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH +
-                              constants.FIELD_WIDTH * constants.POINT_SIZE - 1,
+                              self.settings.settings['field_width'] * constants.POINT_SIZE - 1,
                               constants.FRAME_THICKNESS + i * constants.POINT_SIZE - 1), 2)
 
     def draw_score(self):

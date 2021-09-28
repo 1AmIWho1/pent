@@ -8,5 +8,6 @@ class Menu:
         self.buttons = buttons
         self.input_boxes = input_boxes
 
-    def save_settings(self):
-        pass
+    def update(self):
+        for input_box in self.input_boxes.values():
+            input_box.stop_input()
