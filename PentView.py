@@ -1,5 +1,5 @@
-from Button import Button
-from InputBox import InputBox
+from InputFields.Button import Button
+from InputFields.InputBox import InputBox
 from Field import Field
 from Pent import Pent
 from Menu import Menu

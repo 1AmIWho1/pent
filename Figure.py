@@ -12,7 +12,7 @@ class Figure:
         self.get_shape()
 
     def get_shape(self):
-        with open('figures.json', 'r') as figures_json:
+        with open('static/figures.json', 'r') as figures_json:
             figures = json.load(figures_json)
             self.shape = random.choice(figures)
         for i in range(random.randint(0, 3)):
