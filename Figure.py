@@ -1,7 +1,6 @@
 import constants
 import json
 import random
-import numpy as np
 
 
 class Figure:
@@ -65,31 +64,17 @@ class Figure:
         return constants.POINTS_PER_FIGURE - list(map(lambda x: list(x), self.shape))\
             .count([False for i in range(constants.POINTS_PER_FIGURE)])
 
-    def check_point(self, x, y):
-        try:
-            if self.shape[y][x]:
-                return True
-        except IndexError:
-            pass
-        return False
-
-    def is_near_point_filled(self, x, y):
-        if self.check_point(x + 1, y):
-            return True
-        if self.check_point(x - 1, y):
-            return True
-        if self.check_point(x, y + 1):
-            return True
-        if self.check_point(x, y - 1):
-            return True
-        return False
-
     def rotate(self, direction: bool):
+        new_shape = [line[:] for line in self.shape]
         if direction:
-            self.shape = np.rot90(self.shape)
+            for i in range(constants.POINTS_PER_FIGURE):
+                for j in range(constants.POINTS_PER_FIGURE):
+                    new_shape[j][i] = self.shape[i][constants.POINTS_PER_FIGURE - j - 1]
         else:
-            for i in range(3):
-                self.shape = np.rot90(self.shape)
+            for i in range(constants.POINTS_PER_FIGURE):
+                for j in range(constants.POINTS_PER_FIGURE):
+                    new_shape[i][constants.POINTS_PER_FIGURE - j - 1] = self.shape[j][i]
+        self.shape = new_shape
 
 
 if __name__ == '__main__':
