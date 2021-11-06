@@ -44,19 +44,24 @@ class PentView:  # view
         self.field = Field(self.settings.settings['field_width'], self.settings.settings['field_height'],
                            self.settings.settings['stop_color'])
         self.pent = Pent(self.field)
+        self.menu_on = False
 
     def process_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.gameover = True
                 self.pent.score_inf.check_record()
-            elif not self.gameover and not self.menu_on:
+                return
+            if not self.menu_on:
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:  # menu
+                        self.menu_on = True
+                        self.game_on = False
+                        return
+            if not self.gameover and not self.menu_on:
                 if self.game_on:
                     if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_ESCAPE:  # menu
-                            self.menu_on = True
-                            self.game_on = False
-                        elif event.key == pygame.K_a:
+                        if event.key == pygame.K_a:
                             self.pent.set_direction(-1)
                         elif event.key == pygame.K_d:
                             self.pent.set_direction(1)
@@ -112,6 +117,7 @@ class PentView:  # view
                             self.active_input_box = None
                     if event.key == pygame.K_ESCAPE:
                         self.menu_on = False
+                        self.game_on = True
 
     def track_input_box(self, input_box):
         self.active_input_box = input_box

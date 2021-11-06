@@ -39,7 +39,7 @@ class Pent:  # controller
     def move_figure(self, time):  # движение фигуры влево/вправо
         if time - self.last_time_move >= self.time_per_move:
             self.figure_x += self.direction
-            if self.check_collision_right() or self.check_collision_left() or self.check_collision_down():
+            if self.check_collision_right() or self.check_collision_left():
                 self.figure_x -= self.direction
                 return
             self.last_time_move = time
