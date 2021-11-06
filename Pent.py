@@ -7,8 +7,11 @@ import constants
 class Pent:  # controller
 
     def __init__(self, field: Field):
-        self.last_time = 0
+        self.last_time_fall = 0
+        self.last_time_move = 0
+        self.direction = 0
         self.field = field
+        self.time_per_fall = constants.TIME_PER_FALL
         self.time_per_move = constants.TIME_PER_MOVE
         self.score_inf = Score()
         self.accelerate_figure(False)
@@ -28,10 +31,18 @@ class Pent:  # controller
         self.field.add_figure(self.figure, self.figure_x, self.figure_y)
         self.score_inf.update(constants.POINTS_PER_STOP)
 
-    def move_figure(self, direction):  # движение фигуры влево/вправо
-        self.figure_x += direction
-        if self.check_collision_right() or self.check_collision_left() or self.check_collision_down():
-            self.figure_x -= direction
+    def set_direction(self, direction):
+        self.direction = direction
+        if direction == 0:
+            self.last_time_move = 0
+
+    def move_figure(self, time):  # движение фигуры влево/вправо
+        if time - self.last_time_move >= self.time_per_move:
+            self.figure_x += self.direction
+            if self.check_collision_right() or self.check_collision_left() or self.check_collision_down():
+                self.figure_x -= self.direction
+                return
+            self.last_time_move = time
 
     def rotate_figure(self, direction: bool):  # вращение фигуры по/против часовой стрелке
         self.figure.rotate(direction)
@@ -40,9 +51,9 @@ class Pent:  # controller
 
     def accelerate_figure(self, acc):  # ускорение фигуры
         if acc:
-            self.time_per_move = constants.ACCELERATE_TIME_PER_MOVE
+            self.time_per_fall = constants.ACCELERATE_TIME_PER_MOVE
         else:
-            self.time_per_move = constants.TIME_PER_MOVE
+            self.time_per_fall = constants.TIME_PER_FALL
 
     def drop_figure(self):  # мгновенное падение фигуры
         while not self.check_collision_down():
@@ -52,9 +63,9 @@ class Pent:  # controller
 
     def fall_figure(self, time):  # нормальное падение фигуры
         collision = self.check_collision_down()
-        if not collision and time - self.last_time >= self.time_per_move:
+        if not collision and time - self.last_time_fall >= self.time_per_fall:
             self.figure_y += 1
-            self.last_time = time
+            self.last_time_fall = time
         elif collision:
             self.stop_figure()
             self.add_new_figure()

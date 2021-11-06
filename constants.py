@@ -1,15 +1,14 @@
 import pygame
 import random
 import os
-import json
 from platform import system
 
 if system() == 'Windows':
     WAY_RECORD = os.getenv('APPDATA') + r'\..\Local\Games\pent\record.json'
     WAY_SETTINGS = os.getenv('APPDATA') + r'\..\Local\Games\pent\settings.json'
-else:  # system() == 'Linux':
-    WAY_RECORD = r'~/record/record.json'
-    WAY_SETTINGS = r'~/record/settings.json'
+else:
+    WAY_RECORD = r'/record/record.json'
+    WAY_SETTINGS = r'/record/settings.json'
 if not os.path.exists(os.path.dirname(WAY_RECORD)):
     os.makedirs(os.path.dirname(WAY_RECORD))
 
@@ -27,8 +26,9 @@ SCORE_TABLE_WIDTH = 250
 FRAME_THICKNESS = 10
 POINT_SIZE = 25
 
-TIME_PER_MOVE = 400
-ACCELERATE_TIME_PER_MOVE = 100
+TIME_PER_MOVE = 100
+TIME_PER_FALL = 400
+ACCELERATE_TIME_PER_MOVE = 50
 
 POINTS_PER_STOP = 10
 POINTS_PER_LINE = 100

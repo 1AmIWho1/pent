@@ -57,9 +57,9 @@ class PentView:  # view
                             self.menu_on = True
                             self.game_on = False
                         elif event.key == pygame.K_a:
-                            self.pent.move_figure(-1)
+                            self.pent.set_direction(-1)
                         elif event.key == pygame.K_d:
-                            self.pent.move_figure(1)
+                            self.pent.set_direction(1)
                         elif event.key == pygame.K_q:
                             self.pent.rotate_figure(False)
                         elif event.key == pygame.K_e:
@@ -71,6 +71,8 @@ class PentView:  # view
                     if event.type == pygame.KEYUP:
                         if event.key == pygame.K_s:
                             self.pent.accelerate_figure(False)
+                        if event.key == pygame.K_a or event.key == pygame.K_d:
+                            self.pent.set_direction(0)
                 else:
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_SPACE:
@@ -168,7 +170,7 @@ class PentView:  # view
                               constants.FRAME_THICKNESS),
                              (constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH + i * constants.POINT_SIZE - 1,
                               constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH +
-                              constants.FIELD_HEIGHT * constants.POINT_SIZE), 2)
+                              self.settings.settings['field_height'] * constants.POINT_SIZE), 2)
         for i in range(self.settings.settings['field_height']):
             pygame.draw.line(self.screen, constants.COLORS['BLACK'],
                              (constants.FRAME_THICKNESS + constants.SCORE_TABLE_WIDTH, constants.FRAME_THICKNESS +
@@ -222,6 +224,7 @@ class PentView:  # view
                               rect.top + i * constants.POINT_SIZE - 1), 2)
 
     def process_move(self):
+        self.pent.move_figure(self.time)
         self.pent.fall_figure(self.time)
 
     def process_draw(self):
