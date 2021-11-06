@@ -141,7 +141,7 @@ class Pent:  # controller
             try:
                 self.field.field[line].index(False)
             except ValueError:
-                self.score_inf.update(constants.POINTS_PER_LINE)
+                self.score_inf.update(len(self.field.field[0]) * 10)
                 self.score_inf.solve()
                 self.field.delete_line(line)
                 line -= 1
