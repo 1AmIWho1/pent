@@ -26,6 +26,10 @@ class Pent:  # controller
         self.next_figure = Figure()
         self.figure_x = (self.field.width - len(self.figure.shape[0])) // 2
         self.figure_y = 0
+        go_on = not (self.check_collision_down() or self.check_collision_left() or self.check_collision_right())
+        if not go_on:
+            self.figure = Figure().get_empty_figure()
+        return go_on
 
     def stop_figure(self):  # останавливает фигуру и записывает ее в поле
         self.field.add_figure(self.figure, self.figure_x, self.figure_y)
@@ -66,25 +70,28 @@ class Pent:  # controller
         if not collision and time - self.last_time_fall >= self.time_per_fall:
             self.figure_y += 1
             self.last_time_fall = time
+            return True
         elif collision:
             self.stop_figure()
-            self.add_new_figure()
+            return self.add_new_figure()
         '''
-        for i in range(len(self.field.field)):
-            for j in range(len(self.field.field[0])):
-                if self.figure_y <= i < self.figure_y + constants.POINTS_PER_FIGURE and self.figure_x <= j < self.figure_x + constants.POINTS_PER_FIGURE:
-                    if self.figure.shape[i - self.figure_y][j - self.figure_x]:
-                        print('X', end='')
-                    else:
-                        print('-', end='')
-                else:
-                    if self.field.field[i][j]:
-                        print('O', end='')
-                    else:
-                        print('_', end='')
-            print()
-        print()
-        '''
+                for i in range(len(self.field.field)):
+                    for j in range(len(self.field.field[0])):
+                        if self.figure_y <= i < self.figure_y + constants.POINTS_PER_FIGURE and self.figure_x <= j < self.figure_x + constants.POINTS_PER_FIGURE:
+                            if self.figure.shape[i - self.figure_y][j - self.figure_x]:
+                                print('X', end='')
+                            else:
+                                print('-', end='')
+                        else:
+                            if self.field.field[i][j]:
+                                print('O', end='')
+                            else:
+                                print('_', end='')
+                    print()
+                print()
+                '''
+        return True
+
 
     def check_collision_left(self):  # проверяет, не наезжает ли одна движущаяся фигура на что-либо слева
         if 0 > self.figure_x + self.figure.get_empty_left():

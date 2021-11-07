@@ -231,7 +231,9 @@ class PentView:  # view
 
     def process_move(self):
         self.pent.move_figure(self.time)
-        self.pent.fall_figure(self.time)
+        if not self.pent.fall_figure(self.time):
+            self.game_on = False
+            self.restart()
 
     def process_draw(self):
         self.screen.fill(constants.COLORS['BLACK'])

@@ -17,6 +17,10 @@ class Figure:
         for i in range(random.randint(0, 3)):
             self.rotate(True)
 
+    def get_empty_figure(self):
+        self.shape = [[False for i in range(constants.POINTS_PER_FIGURE)] for i in range(constants.POINTS_PER_FIGURE)]
+        return self
+
     def get_width(self):
         start = 0
         for j in range(constants.POINTS_PER_FIGURE):
@@ -40,17 +44,23 @@ class Figure:
         return self.get_empty_left(column)
 
     def get_empty_right(self, column=constants.POINTS_PER_FIGURE-1):
-        for i in range(constants.POINTS_PER_FIGURE):
-            if self.shape[i][column]:
-                return column
-        column -= 1
+        try:
+            for i in range(constants.POINTS_PER_FIGURE):
+                if self.shape[i][column]:
+                    return column
+            column -= 1
+        except IndexError:
+            return constants.POINTS_PER_FIGURE
         return self.get_empty_right(column)
 
     def get_empty_top(self, line=0):
-        for i in range(constants.POINTS_PER_FIGURE):
-            if self.shape[line][i]:
-                return line
-        line += 1
+        try:
+            for i in range(constants.POINTS_PER_FIGURE):
+                if self.shape[line][i]:
+                    return line
+            line += 1
+        except IndexError:
+            return constants.POINTS_PER_FIGURE
         return self.get_empty_top(line)
 
     def get_empty_bottom(self, line=constants.POINTS_PER_FIGURE-1):
