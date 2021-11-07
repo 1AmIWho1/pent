@@ -27,6 +27,8 @@ class PentView:  # view
         buttons = {
             'restart': Button(self.restart, 'restart', pygame.font.Font(constants.FONT, 50), self.screen,
                               self.settings.window_width / 2, self.settings.window_height - 90),
+            'reset_record': Button(self.pent.score_inf.reset, 'reset', pygame.font.Font(constants.FONT, 50),
+                                   self.screen, 35 + 72, 170),
             'button_save_settings': Button(self.save_settings, 'save', pygame.font.Font(constants.FONT, 50),
                                            self.screen, 420, 67)
         }
