@@ -21,6 +21,7 @@ class PentView:  # view
         pygame.font.init()
         self.screen = pygame.display.set_mode((self.settings.window_width, self.settings.window_height))
         pygame.display.set_caption('pent')
+        pygame.display.set_icon(pygame.image.load(constants.ICON))
         self.gameover = False
         self.game_on = False
         self.menu_on = False
@@ -85,9 +86,10 @@ class PentView:  # view
                         if event.key == pygame.K_SPACE:
                             self.game_on = True
             elif self.menu_on:
-                if event.type == pygame.MOUSEBUTTONUP:
+                if event.type == pygame.MOUSEBUTTONUP or event.type == pygame.MOUSEBUTTONDOWN:
                     for button in self.menu.buttons.values():
                         button.click(event)
+                if event.type == pygame.MOUSEBUTTONUP:
                     for input_box in self.menu.input_boxes.values():
                         input_box.click(event)
                 if event.type == pygame.KEYDOWN:

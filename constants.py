@@ -37,6 +37,7 @@ WINDOW_HEIGHT = FIELD_HEIGHT * POINT_SIZE + 2 * FRAME_THICKNESS
 
 FONT_SIZE = 34
 FONT = 'static/bb3273.ttf'
+ICON = 'static/pent.png'
 
 COLORS = {
     'RED': pygame.Color(255, 0, 0),
