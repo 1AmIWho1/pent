@@ -28,7 +28,7 @@ class PentView:  # view
         buttons = {
             'restart': Button(self.restart, 'restart', pygame.font.Font(constants.FONT, 50), self.screen,
                               self.settings.window_width / 2, self.settings.window_height - 90),
-            'reset_record': Button(self.pent.score_inf.reset, 'reset', pygame.font.Font(constants.FONT, 50),
+            'reset_record': Button(self.reset_record, 'reset', pygame.font.Font(constants.FONT, 50),
                                    self.screen, 35 + 72, 170),
             'button_save_settings': Button(self.save_settings, 'save', pygame.font.Font(constants.FONT, 50),
                                            self.screen, 420, 67)
@@ -139,6 +139,9 @@ class PentView:  # view
         self.screen = pygame.display.set_mode((self.settings.window_width, self.settings.window_height))
         self.restart()
 
+    def reset_record(self):
+        self.pent.score_inf.reset()
+
     def draw_menu(self):
         font = pygame.font.Font(constants.FONT, 50)
         text = font.render(self.menu.sentence, False, constants.COLORS['WHITE'])
@@ -237,6 +240,7 @@ class PentView:  # view
         self.pent.move_figure(self.time)
         if not self.pent.fall_figure(self.time):
             self.game_on = False
+            self.pent.score_inf.check_record()
             self.restart()
 
     def process_draw(self):

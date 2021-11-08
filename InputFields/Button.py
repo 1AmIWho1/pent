@@ -17,9 +17,10 @@ class Button:
         self.screen.blit(self.text, self.rect)
 
     def click(self, event):
+        if event.type == pygame.MOUSEBUTTONUP:
+            self.cur_color = constants.COLORS['BLACK']
         if self.rect.collidepoint(event.pos):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 self.cur_color = constants.COLORS['PINK']
             if event.type == pygame.MOUSEBUTTONUP:
                 self.func()
-                self.cur_color = constants.COLORS['BLACK']

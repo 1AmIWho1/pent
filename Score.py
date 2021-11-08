@@ -32,6 +32,6 @@ class Score:
         return False
 
     def reset(self):
-        self.score = 0
+        self.record = 0
         with open(constants.WAY_RECORD, 'w') as record_json:
-            json.dump(self.score, record_json)
+            json.dump(self.record, record_json)
