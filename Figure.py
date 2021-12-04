@@ -8,9 +8,26 @@ class Figure:
     def __init__(self):
         self.shape = [[False for i in range(constants.POINTS_PER_FIGURE)] for i in range(constants.POINTS_PER_FIGURE)]
         self.color = constants.get_random_color(['WHITE', 'STOP_COLOR', 'BLACK'])
+        self.shapes = []
+        self.load_shapes()
         self.get_shape()
 
+    def load_shapes(self):
+        with open('static/figures.bin', 'rb') as figures_bin:
+            figures_tmp = list(map(bool, list(figures_bin.read())))
+            for i in range(constants.FIGURES_COUNT):
+                self.shapes.append([])
+                for j in range(constants.POINTS_PER_FIGURE):
+                    self.shapes[i].append(list(
+                        figures_tmp[i * (constants.POINTS_PER_FIGURE ** 2) + j * constants.POINTS_PER_FIGURE:
+                                    i * (constants.POINTS_PER_FIGURE ** 2) + (j + 1) * constants.POINTS_PER_FIGURE]))
+
     def get_shape(self):
+        self.shape = random.choice(self.shapes)
+        for i in range(random.randint(0, 3)):
+            self.rotate(True)
+
+    def get_shape_json(self):
         with open('static/figures.json', 'r') as figures_json:
             figures = json.load(figures_json)
             self.shape = random.choice(figures)

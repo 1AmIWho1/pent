@@ -15,6 +15,8 @@ if not os.path.exists(os.path.dirname(WAY_RECORD)):
 GRID = True
 STOP_COLOR = False
 
+FIGURES_COUNT = 18
+
 POINTS_PER_FIGURE = 5
 
 FIELD_WIDTH = 15

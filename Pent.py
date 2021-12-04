@@ -92,7 +92,6 @@ class Pent:  # controller
                 '''
         return True
 
-
     def check_collision_left(self):  # проверяет, не наезжает ли одна движущаяся фигура на что-либо слева
         if 0 > self.figure_x + self.figure.get_empty_left():
             return True
