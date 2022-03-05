@@ -1,35 +1,33 @@
 # pent
 
-### Что это? 
-Аналогичная тетрису игра, но с фигурами пентамино
+### What is it? 
+Tetris, but with polyomino consisting of 5 squares
 
 ### Управление
-- `A`, `D` - движение влево/вправо
-- `Q`, `E` - поворот фигуры
-- `S` - ускорение
-- `Space` - начало/продолжение игры, сброс фигуры
-- `Esc` - настройки
+- `A`, `D` - move left/right
+- `Q`, `E` - rotate
+- `S` - accelerate
+- `Space` - to start/continue game, drop
+- `Esc` - settings
 
-### Что будет дальше?
-- Изменение системы счета
-- Возможно добавление внутри игровой валюты для очищения поля
-- ???
-
-### Технологичеcкий стек:
+### Tech stack:
 - python
 - pygame
 
-### Инструкция по настройке проекта:
-1. Склонировать проект
-2. Обновить pip: 
+### How to set the project:
+1. Clone repository:
+```bash
+git clone https://github.com/1AmIWho1/pent.git
+```
+2. Update pip: 
 ```bash
 pip install --upgrade pip
 ```
-3. Установить необходимые пакеты: 
+3. Go to the project directory and install requirements: 
 ```bash
 pip install -r requirements.txt
 ```
-4. Запустить:
+4. Run the game:
 ```bash
 python run.py
 ```
