@@ -226,11 +226,11 @@ class PentView:  # view
                                      (rect.left + point * constants.POINT_SIZE, rect.top + line * constants.POINT_SIZE,
                                       constants.POINT_SIZE, constants.POINT_SIZE))
 
-        for i in range(constants.POINTS_PER_FIGURE):
+        for i in range(constants.POINTS_PER_FIGURE + 1):
             pygame.draw.line(self.screen, constants.COLORS['BLACK'],
                              (rect.left + i * constants.POINT_SIZE - 1, rect.top),
                              (rect.left + i * constants.POINT_SIZE - 1, rect.bottom), 2)
-        for i in range(constants.POINTS_PER_FIGURE):
+        for i in range(constants.POINTS_PER_FIGURE + 1):
             pygame.draw.line(self.screen, constants.COLORS['BLACK'],
                              (rect.left, rect.top + i * constants.POINT_SIZE - 1),
                              (rect.left + constants.POINTS_PER_FIGURE * constants.POINT_SIZE - 1,
