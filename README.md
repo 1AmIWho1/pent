@@ -3,7 +3,7 @@
 ### What is it? 
 Tetris, but with polyomino consisting of 5 squares
 
-### Управление
+### Сontrol
 - `A`, `D` - move left/right
 - `Q`, `E` - rotate
 - `S` - accelerate
